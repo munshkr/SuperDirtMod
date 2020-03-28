@@ -13,7 +13,7 @@ In TidalCycles, if you play a long sample or synth, you won't be able to apply
 effects and modulate them while the sample is playing:
 
 ```haskell
-d1 $ n "[0, 2, 5, 9]/2" # s "superhammond" # octave 6 # legato 0.9
+d1 $ n "[0, 2, 5, 9]/2" # s "superhammond" # octave 6
    # pF "vibrato" (range 0 2 $ slow 2 saw)
 ```
 
@@ -22,22 +22,23 @@ fixed to 0 the entire time.  By using the `mod1` helper function, you can
 modulate the `vibrato` parameter for all synths on `d1`.
 
 ```haskell
+d1 $ n "[0, 2, 5, 9]/2" # s "superhammond" # octave 6
+
+mod1 $ segment 32
+     $ pF "vibrato" (range 0 2 $ slow 2 saw)
+```
+
+The `segment` is there to discretize the `saw` function into 32 steps.
+
+A more complete example:
+
+```haskell
 d1 $ n "[0, 2, 5, 9]/2" # s "superhammond" # octave 6 # legato 0.9
 
 mod1 $ segment 32
      $ pF "vibrato" (range 0 2 $ slow 2 saw)
      # pF "vrate" (range 0 16 $ slow 2 tri)
      # pF "voice" (range 0 4 $ perlin)
-```
-
-The `segment` is there to discretize the `saw` function into 32 steps.
-
-A more complex example:
-
-```haskell
-d1 $ s "bev" # cut 1
-
-mod1 $ segment 32 $ lpf (range 100 5000 $ tri) # lpq 0.1
 ```
 
 
@@ -112,6 +113,12 @@ respective orbits.
 ## Usage
 
 ...
+
+
+## Known limitations
+
+* You can't modulate the parameters of specific synths. All running synths
+  playing on some orbit are affected by the parameter modulation.
 
 
 ## Contributing
