@@ -1,6 +1,6 @@
 # SuperDirtMod
 
-SuperCollider Quark that extends SuperDirt for parameter modulation of
+***Experimental***: SuperCollider Quark that extends SuperDirt for parameter modulation of
 currently running synth nodes.
 
 This will allow you to modulate some parameter of a SuperDirt SynthDef while it
