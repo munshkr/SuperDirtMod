@@ -131,6 +131,9 @@ SuperDirtMod.start(superDirt: mySuperDirt)
 * You can't modulate the parameters of specific synths. All running synths
   playing on some orbit are affected by the parameter modulation.
 
+* If you silence a `pmod` stream, the last values will not be reset. For now,
+  you can call `SuperDirtMod.reset` to reset the state.
+
 
 ## Contributing
 
