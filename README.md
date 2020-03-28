@@ -33,7 +33,7 @@ The `segment` is there to discretize the `saw` function into 32 steps.
 A more complete example:
 
 ```haskell
-d1 $ n "[0, 2, 5, 9]/2" # s "superhammond" # octave 6 # legato 0.9
+d1 $ n "[0, 2, 5, 9]/2" # s "superhammond" # octave 6
 
 mod1 $ segment 32
      $ pF "vibrato" (range 0 2 $ slow 2 saw)
