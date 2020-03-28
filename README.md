@@ -81,21 +81,23 @@ modTarget = OSCTarget {oName = "SuperDirtMod", oAddress = "127.0.0.1", oPort = 5
 mod <- startTidal modTarget (defaultConfig {cCtrlListen = False, cFrameTimespan = 1/20})
 
 -- Define pmod stream replacer and orbit helper functions
-:{
-let pmod = streamReplace mod
-    mod1 = pmod "mod1" . (|< orbit 0)
-    mod2 = pmod "mod2" . (|< orbit 1)
-    mod3 = pmod "mod3" . (|< orbit 2)
-    mod4 = pmod "mod4" . (|< orbit 3)
-    mod5 = pmod "mod5" . (|< orbit 4)
-    mod6 = pmod "mod6" . (|< orbit 5)
-    mod7 = pmod "mod7" . (|< orbit 6)
-    mod8 = pmod "mod8" . (|< orbit 7)
-    mod9 = pmod "mod9" . (|< orbit 8)
-    mod10 = pmod "mod10" . (|< orbit 9)
-    mod11 = pmod "mod11" . (|< orbit 10)
-    mod12 = pmod "mod12" . (|< orbit 11)
-:}
+pmod = streamReplace mod
+mod1 = pmod "mod1" . (|< orbit 0)
+mod2 = pmod "mod2" . (|< orbit 1)
+mod3 = pmod "mod3" . (|< orbit 2)
+mod4 = pmod "mod4" . (|< orbit 3)
+mod5 = pmod "mod5" . (|< orbit 4)
+mod6 = pmod "mod6" . (|< orbit 5)
+mod7 = pmod "mod7" . (|< orbit 6)
+mod8 = pmod "mod8" . (|< orbit 7)
+mod9 = pmod "mod9" . (|< orbit 8)
+mod10 = pmod "mod10" . (|< orbit 9)
+mod11 = pmod "mod11" . (|< orbit 10)
+mod12 = pmod "mod12" . (|< orbit 11)
+
+-- Reset functions
+reset = pI "reset" 1
+modResetAll = streamOnce mod reset
 
 putStrLn "SuperDirtMod enabled"
 
@@ -125,6 +127,13 @@ mySuperDirt.start;
 SuperDirtMod.start(superDirt: mySuperDirt)
 ```
 
+If you silence a modulation stream, you will notice that parameters will not go
+to default values, but instead keep using the last value when the stream was
+silenced.
+
+To reset all modulation parameters back to default values, you can use
+`modResetAll`.
+
 
 ## Known limitations
 
@@ -132,7 +141,8 @@ SuperDirtMod.start(superDirt: mySuperDirt)
   playing on some orbit are affected by the parameter modulation.
 
 * If you silence a `pmod` stream, the last values will not be reset. For now,
-  you can call `SuperDirtMod.reset` to reset the state.
+  you can call `modResetAll` on TidalCycles or `SuperDirtMod.reset` on SC to
+  reset the state.
 
 
 ## Contributing

@@ -15,13 +15,22 @@ SuperDirtMod {
 		};
 
 		this.stop;
+
 		responders.add(
 			OSCFunc({ |msg, time, tidalAddr|
 				var params, orbitIndex, orbit;
 
 				params = msg[1..];
 				orbitIndex = params.asDict[\orbit];
+				if (orbitIndex.isNil) {
+					orbitIndex = 0;
+				};
 				orbit = superDirtInstance.orbits[orbitIndex];
+
+				if (params.asDict[\reset] == 1) {
+					"[SuperDirtMod] Reset values at %".format(time).postln;
+					this.reset;
+				};
 
 				params.pairsDo { |param, value|
 					[\cps, \cycle, \delta, \orbit].any { |p| p == param }.not.if {
@@ -31,7 +40,7 @@ SuperDirtMod {
 						lastValues[param] = value;
 					};
 					// [param, ~sdeLastValues[param]].postln;
-				}
+				};
 			}, '/set', senderAddr, recvPort: port).fix;
 		);
 
@@ -56,8 +65,10 @@ SuperDirtMod {
 
 		superDirtInstance.orbits.do { |orbit|
 			lastValues.keysDo { |param|
-				orbit.defaultParentEvent.delete(param);
+				orbit.defaultParentEvent.removeAt(param);
 			}
-		}
+		};
+
+		lastValues.clear;
 	}
 }
