@@ -112,7 +112,18 @@ respective orbits.
 
 ## Usage
 
-...
+Simply execute `SuperDirtMod.start` after starting SuperDirt.
+
+By default, it tries to use `~dirt` as the default SuperDirt instance. You can
+also pass it with via parameter:
+
+```supercollider
+var mySuperDirt = SuperDirt(2, s);
+mySuperDirt.loadSoundFiles;
+mySuperDirt.start;
+
+SuperDirtMod.start(superDirt: mySuperDirt)
+```
 
 
 ## Known limitations
