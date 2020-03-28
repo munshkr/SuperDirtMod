@@ -1,17 +1,17 @@
 SuperDirtMod {
 	classvar responders;
 	classvar lastValues;
-	classvar superDirt;
+	classvar superDirtInstance;
 	classvar started = false;
 
-	*start { |port=57130, superDirtInst=nil|
+	*start { |port=57130, superDirt=nil|
 		var senderAddr = NetAddr("127.0.0.1");
 
-		if (superDirtInst.isNil) {
-			superDirt = superDirtInst;
+		if (superDirt.isNil) {
+			"[SuperDirtMod] Using ~dirt as SuperDirt instance".postln;
+			superDirtInstance = ~dirt;
 		} {
-			"[SuperDirtMod] Using SuperDirt.default".postln;
-			superDirt = SuperDirt.default;
+			superDirtInstance = superDirt;
 		};
 
 		this.stop;
@@ -21,7 +21,7 @@ SuperDirtMod {
 
 				params = msg[1..];
 				orbitIndex = params.asDict[\orbit];
-				orbit = superDirt.orbits[orbitIndex];
+				orbit = superDirtInstance.orbits[orbitIndex];
 
 				params.pairsDo { |param, value|
 					[\cps, \cycle, \delta, \orbit].any { |p| p == param }.not.if {
@@ -54,7 +54,7 @@ SuperDirtMod {
 			^this;
 		};
 
-		superDirt.orbits.do { |orbit|
+		superDirtInstance.orbits.do { |orbit|
 			lastValues.keysDo { |param|
 				orbit.defaultParentEvent.delete(param);
 			}
